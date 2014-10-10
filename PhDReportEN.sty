@@ -1,0 +1,302 @@
+%% PhDReportEN.sty
+%% Created by  Albertas Gimbutas  2014
+%
+%% Latest version available here:  https://github.com/LIKS/phd_report_template_en
+%% Any suggestions or contributions are welcome!  Also see: http://latex.liks.lt!
+%
+%%  License CC BY 4.0 (see more at http://creativecommons.org/licenses/by/4.0/) 
+% You are free to (a) share - copy and redistribute the material in any medium
+% or format (b) adapt - remix, transform, and build upon the material for any
+% purpose, even commercially. As long as you give appropriate credit, provide a
+% link to the license, and indicate if changes were made.
+
+%% Doktorantų metinės ataskaitos šablonas, atitinkantis VU MII reikalavimus
+\ProvidesPackage{PhDReportEN}[
+    2014/10/08 1.0 PhD Yearly Report Style suitable for VU MII]
+
+%% Paketų priklausomybės
+\RequirePackage[english]{babel}% 
+% \RequirePackage{LTPlius}  % Lietuvybės patobulinimai
+\RequirePackage{vmargin}  % Paraščių nustatymui
+\RequirePackage{setspace} % Intervalo tarp eilučių nustatymui
+\RequirePackage[T1]{fontenc} % Teksto koduotei nustatyti
+\RequirePackage{pgf}      % Paveikslėlių įterpimui į norimą vietą 
+\RequirePackage[
+    colorlinks=true,
+    urlcolor=blue,
+    linkcolor=black,
+]{hyperref}
+\RequirePackage{tabularx} % Plačioms lentelems su spalvotom briaunom
+\RequirePackage{ctable}   % Pastorinti arba nuspalvinti lentelės briaunoms
+\RequirePackage{fancyhdr}
+\RequirePackage{tabularx}
+\RequirePackage{graphicx}
+% \RequirePackage{indentfirst} % Indentuoja skyriaus pirmą eilutę
+
+%% Nustatymai
+\setpapersize[portrait]{A4}   % Lapo formatas
+\setlength{\parindent}{0.7cm} % Pirmos eilutes atitraukimas
+% \setlength{\parskip}{0.15cm}  % Tarpai tarp paragrafų
+\renewcommand*\rmdefault{ppl} % 'Serif' šriftas visame dokumente (Palatino)  
+\sloppy  % Tolygiai paskirsto tekstą nuo kairės iki dešinės paraštės
+\setlength{\textheight}{660pt} % Puslapio bloko dydį padidiname, kad galėtumėme
+                               % nustatyti apatinės paraštės aukštį pirmame psl.
+\renewcommand{\headrulewidth}{0pt}% Panaikiname viršutinės eilutės liniją
+\renewcommand{\footrulewidth}{0pt}% Panaikiname apatinės eilutės liniją
+% Atnaujinamas \tabularxcolumn paveikslėlių įterpimui
+\renewcommand{\tabularxcolumn}[1]{>{\centering\arraybackslash}m{#1}}
+
+%% Kintamųjų, kuriuos turi nurodyti naudotojas, aprašai
+\newcommand{\universitylogo}[1]{\def\@universitylogo{#1}}
+\newcommand{\departmentlogo}[1]{\def\@departmentlogo{#1}}
+\newcommand{\universitytitle}[1]{\def\@universitytitle{#1}}
+\newcommand{\departmenttitle}[1]{\def\@departmenttitle{#1}}
+\newcommand{\scientifictrend}[1]{\def\@scientifictrend{#1}}
+\newcommand{\reportid}[1]{\def\@reportid{#1}}
+\newcommand{\departmentdetails}[1]{\def\@departmentdetails{#1}}
+
+% Klaidos pranešimo, jeigu nenurodyta kintamojo reikšmė, parodymo metodas
+\newcommand{\errorifundefined}[2]{%
+    % #1 - tikrinamo kintamojo pavadinimas (be \ priekyje)
+    % #2 - klaidos pranešimas
+    \@ifundefined{#1}{\PackageError{PhdReport}{#2}{Add the missing command}}%
+}
+
+%% Titulinio puslapio pavaizdavimas
+\renewcommand\maketitle{
+  \begin{titlepage}%
+    \errorifundefined{@universitylogo}%
+      {Path to university logo is unspecified (use \protect\universitylogo)}
+    \errorifundefined{@departmentlogo}%
+      {Path to university department logo unspecified (use \protect\departmentlogo)}
+    \errorifundefined{@universitytitle}%
+      {University title unspecified (use \protect\universitytitle)}
+    \errorifundefined{@departmenttitle}%
+      {Department title unspecified (use \protect\departmenttitle)}
+    \errorifundefined{@scientifictrend}
+      {Scientific trend unspecified (use \protect\scientifictrend)}
+
+    \setmargnohfrb{30mm}{23mm}{30mm}{35mm} % Titulinio lapo paraštės
+    \begin{center}
+      \begin{tabularx}{\linewidth}{@{}m{.2\linewidth}Xm{.2\linewidth}@{}}
+           \includegraphics[width=0.2\textwidth]{img/vu_logo}  &
+           \Large\textbf{\@universitytitle}  \par 
+           \textbf{\@departmenttitle} \par 
+           \textbf{L I T H U A N I A} &  
+           \includegraphics[width=0.19\textwidth]{img/mii_logo} \\
+      \end{tabularx}
+
+      % Mokslo krypties tarp storų juodų linijų įterpimas
+      \begin{tabularx}{1\textwidth}{>{\setlength\hsize{1\hsize}\centering}X}
+        \specialrule{.3em}{0.9em}{0.3em}   % Stora linija
+        \Large\MakeUppercase{\@scientifictrend} \tabularnewline
+        \specialrule{.3em}{0em}{0em}  % Stora linija
+      \end{tabularx}
+
+      \vskip 3.1cm   % Temos pavadinimas
+      {\huge \bf \MakeUppercase{\@title}}
+      \vskip 1.8cm   % Autorius
+      {\LARGE \bf \@author}
+      \vskip 1.6cm   % Data
+      {\LARGE \sffamily \@date}
+      \vskip 1cm   % Ataskaitos aprašas
+      {\LARGE \sffamily  Technical Report \@reportid}
+      \vskip 8.5cm   % Departamento rekvizitai
+
+      \fancyfoot[C]{\onehalfspacing \@departmentdetails}
+      \thispagestyle{fancy}
+
+    \end{center}
+  \end{titlepage}%
+
+  \setcounter{page}{2}     % Puslapių numeravimą pradėti nuo 2
+  \setcounter{footnote}{1} % Išnašų numeravimą pradėti nuo 1
+  \onehalfspacing          % Tarpai tarp eilučių likusiame dokumente bus 1,5 
+
+  % Atlaisvinti kintamuosius
+  \global\let\maketitle\relax
+  \global\let\@papertype\@empty
+  \global\let\@title\@empty
+  \global\let\@author\@empty
+  \global\let\@date\@empty
+  \global\let\title\relax
+  \global\let\author\relax
+  \global\let\date\relax
+  \global\let\@universitylogo\@empty
+  \global\let\@departmentlogo\@empty
+  \global\let\@universitytitle\@empty
+  \global\let\@departmenttitle\@empty
+  \global\let\@scientifictrend\@empty
+  \global\let\@reportid\@empty
+  \global\let\@departmentdetails\@empty
+  \global\let\@errorifundefined\@empty
+  \global\let\universitylogo\relax
+  \global\let\departmentlogo\relax
+  \global\let\universitytitle\relax
+  \global\let\departmenttitle\relax
+  \global\let\reportid\relax
+  \global\let\departmentdetails\relax
+  \global\let\errorifundefined\relax
+}
+
+%% Apatinėje puslapio eilutėje dešnėje rodomas puslapio numeris
+%% Kairėje - ataskaitos identifikacinis numeris
+\def\reportid{\@dblarg\container@reportid}  % Užkešuojama \@reportid reikšmė
+\def\container@reportid[#1]#2{
+    \gdef\@reportid{#2}
+    \gdef\container@keep@reportid{#1}
+}
+
+\def\ps@plain{% Nustatoma apatinės puslapio eilutės reikšmė
+    \renewcommand{\@oddhead}{}%
+    \renewcommand{\@evenhead}{}%
+    \renewcommand{\@evenfoot}{\container@keep@reportid\hfill\textrm{\thepage}}%
+    \renewcommand{\@oddfoot}{\@evenfoot}%
+}
+
+%% Turinio pavaizdavimo atnaujinimas
+\renewcommand\tableofcontents{%
+  % Visame dokumente už titulinio lapo paraštės bus:
+  \setmarginsrb{3cm}{2cm}{1.5cm}{2.5cm}{12pt}{20pt}{0pt}{0mm}%
+  \pagestyle{plain}%
+  
+  \begin{singlespacing}   % Turinys bus su viengubu intervalu tarp eilučių
+    \cleardoublepage%
+    % Gražus turinio pavadinimas
+    \section*{\color[RGB]{23,54,93}
+      \Huge\centering\contentsname\hfill  % Žodis 'Turinys' 
+      \color[RGB]{79,129,189} \\  % Mėlynos spalvos brūkšnys po 'Turinys'
+      \begin{tabularx}{1\textwidth}{>{\setlength\hsize{1\hsize}\centering}X}
+         \specialrule{0.05em}{-1em}{0em}
+      \end{tabularx}}%
+    \begin{minipage}{\textwidth}
+      \@starttoc{toc}
+    \end{minipage}
+  \end{singlespacing}%
+  \newpage%
+}
+\renewcommand{\@dotsep}{1}   % Nustatomi tarpai tarp taškų turinyje
+
+
+%% Skyrių pavaizdavimas
+% Atnaujinamas skyriaus turinyje pavaizdavimas:
+% 1. Turinyje turi taškai bėgti ir iki sekcijų
+% 2. Nėra vertikalaus tarpo prieš sekcijos turinio eilutę
+% 3. Ne pusstoris, o paprastas šriftas
+\renewcommand\l@section[2]{%
+  \ifnum \c@tocdepth >\z@
+    \addpenalty\@secpenalty
+    \setlength\@tempdima{1.5em}%
+    \begingroup
+      \parindent \z@ \rightskip \@pnumwidth
+      \parfillskip -\@pnumwidth
+      \leavevmode {
+      \advance\leftskip\@tempdima
+      \hskip -\leftskip
+      #1}\nobreak\
+      \leaders\hbox{$\m@th\mkern \@dotsep mu\hbox{.}\mkern \@dotsep mu$}
+     \hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+    \endgroup
+  \fi}
+
+% Nedėti taško po skyriaus pavadinimo
+\RequirePackage{titlesec} % Lanksčiam skyrių pavadinimų formatavimui
+\titleformat{\section}
+{\normalfont\Large\bfseries}   % Skyriaus pavadinimo šriftas
+{\thesection}{12pt}{}       % Skyriaus numerio formatavimas, tarpas po numerio 
+
+
+%% Literatūros sąrašas
+% Nustatomas lietuviškas literatūros sąrašo pavadinimas 
+\addto\captionslithuanian{%
+    \renewcommand{\refname}{\emph{References}}%
+}
+
+% Nustatomas literatūros sąrašo turinyje stilius
+\let\oldbibliography\bibliography
+\newcommand\noemph[1]{\bgroup\let\emph\relax#1\egroup} % Pašalinti kursyvą
+\renewcommand{\bibliography}[1]{%
+    \addcontentsline{toc}{section}{\noemph{\refname}}%
+    \bibliographystyle{alpha}%
+    \oldbibliography{#1}%
+}
+
+
+%% Priedai
+% Atnaujinami priedų skyriaus stiliai bei pavaizdavimas turinyje
+\renewcommand{\appendix}{%
+  \bigskip
+  \noindent\Large\textbf{\textit{Appendixes}} \par
+  \vspace{0.3\baselineskip}
+  \renewcommand{\section}{%
+    % \cleardoublepage%
+    \secdef\@Appendix\@sAppendix%
+  }%
+  \setcounter{section}{0}%
+  \renewcommand{\thesection}{Nr. \arabic{section}.}%
+}
+\def\@Appendix[#1]#2{%
+  \refstepcounter{section}%
+  \addcontentsline{toc}{section}%
+  {\appendixname~\thesection}%
+  {\large\bfseries\appendixname\ \thesection \\ 
+    \indent #2\par}%
+  \sectionmark{#1} \vspace{0.2\baselineskip}%
+  \footnotesize%
+}
+\def\@sAppendix#1{%
+  {\flushright\large\bfseries\appendixname\par
+    \centering#1\par}%
+  \vspace{\baselineskip}%
+  \footnotesize%
+}
+
+
+%% Skyrių tipų deklaravimas
+% Skyrius neturintis numerio, bet įtraukiamas į turinį
+\newcommand{\sectionnonum}[1]{%
+    \cleardoublepage%
+    \section*{#1}%
+    \addcontentsline{toc}{section}{#1}%
+}
+% Skyrius neturintis numerio bei neįeinantis į turinį
+\newcommand{\sectionnonumnocontent}[1]{%
+    \cleardoublepage%
+    \section*{#1}%
+}
+% Raktinių žodžių komanda
+\newcommand\keywords[1]{%
+    \bigskip
+    \noindent \textbf{Keywords:}\; \textbf{#1}
+}
+% Apibrėžiame ketvirto lygio skyrius
+\newcommand{\subsubsubsection}{\subsubparagraph}
+\makeatletter
+\renewcommand\subsubsubsection{\@startsection{paragraph}{4}{0ex}{-3.25ex plus -1ex minus
+-0.2ex}{1.5ex plus 0.2ex}{\normalfont\normalsize\bfseries}}
+\makeatother
+\stepcounter{secnumdepth}
+\stepcounter{tocdepth}
+\renewcommand{\paragraph}{\subparagraph}
+
+
+%% Dabartinis mėnuo lietuviškai, naudojimas: \monthlt[\month]
+% \newcommand\monthlt[1][EMPTY]{
+% \ifnum1=#1sausis\else
+% \ifnum2=#1vasaris\else
+% \ifnum3=#1kovas\else
+% \ifnum4=#1balandis\else
+% \ifnum5=#1gegužė\else
+% \ifnum6=#1birželis\else
+% \ifnum7=#1liepa\else
+% \ifnum8=#1rugpjūtis\else
+% \ifnum9=#1rugsėjis\else
+% \ifnum10=#1spalis\else
+% \ifnum11=#1lapkritis\else
+% \ifnum12=#1gruodis\else
+% \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+
+%% Paskutiniai du metų skaitmenys iterpiami su komanda \shortyear 
+\def\yeartwodigit#1{\expandafter\yeartwodigithelper#1}
+\def\yeartwodigithelper#1#2#3#4{#3#4}
+\newcommand{\shortyear}{\yeartwodigit{\the\year}}
