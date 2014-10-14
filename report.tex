@@ -55,8 +55,10 @@ methodology etc.; texts of papers ready for publishing can be included).
 Preparation of the report is optional if the author did not have this kind of
 commitments.
 
-\section{References}% If you use \cite at least once, comment this line;
-                    % Uncomment the next line and lines in Makefile. 
+\section{Conclusions}
+
+\section*{\emph{References}}% If you use \cite at least once, comment this line;
+                            % Uncomment the next line and lines in Makefile. 
 % \bibliography{bibliografija}   
 
 \appendix
@@ -80,6 +82,26 @@ commitments.
     \centering
 \includegraphics[scale=0.5]{img/MLP}
 \caption{Image example}
+\label{img:mlp}
 \end{figure}
+
+
+\newpage
+\section{\texttt{ALGORITHM\_EXAMPLE} algorithm pseudocode}
+\begin{algorithm}[H]
+\caption{Algorithm pseudocode example}
+\begin{algorithmic}[1]
+    \Procedure{ALGORITHM\_EXAMPLE}{$n, d, A$}
+    \State $i \gets d $
+    \While{$i < n$}
+        \ForAll{$r \in A $}
+            \State $v \gets f(r)$  \Comment{see fig. \ref{img:mlp}.}
+        \EndFor
+        \State $i \gets i + 1$
+    \EndWhile
+\EndProcedure
+\end{algorithmic}
+\label{alg:multivariate pseudocode}
+\end{algorithm}
 
 \end{document}
